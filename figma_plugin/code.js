@@ -1,6 +1,6 @@
-// Bimax: Apple-Class Product Reveal Deck Generator (10-Slide Investor & Stage System)
-// Strictly follows the 2026 Apple-Class Product Reveal System (WWDC26 / Sept 2025 / Aside Master Guide)
-// Narrative: Status Quo -> Frustration -> Mental Model -> Live Demo -> Architecture -> Proof -> Why Now -> Wedge -> Trust -> Vision
+// Bimax: Apple-Class Master Pitch Deck Generator (10-Slide Investor & Stage System)
+// Strictly implements the 9 Strategic Research Pillars & Apple-Class System Rules
+// Narrative: Crisis -> Identity -> Antidote -> 5 Breakthroughs -> Non-Negotiables -> Landscape -> Moat -> Tech Stack -> Methodologies -> Vision
 
 (async () => {
   try {
@@ -58,7 +58,7 @@
       ]);
     }
 
-    // Text Helper
+    // Text Node Helper
     function makeText(text, font, size, fill, opts = {}) {
       const t = figma.createText();
       t.fontName = font;
@@ -92,7 +92,7 @@
       return f;
     }
 
-    // Standard Slide Generator (1920x1080) in 2 rows of 5
+    // Slide Generator (1920x1080) in 2 rows of 5
     function makeSlide(index, name) {
       const slide = figma.createFrame();
       slide.name = `Slide ${String(index).padStart(2, '0')} — ${name}`;
@@ -106,7 +106,7 @@
       return slide;
     }
 
-    // Standard Card Container (Archetype: Idea on Left, Evidence Card on Right)
+    // Card Container Helper
     function makeCard(width, height, opts = {}) {
       const c = figma.createFrame();
       c.resize(width, height);
@@ -126,443 +126,397 @@
     const allSlides = [];
 
     // ==========================================
-    // SLIDE 01: IDENTITY (<10s Pitch)
-    // "AI that can use your computer."
-    // ==========================================
-    {
-      const s = makeSlide(1, "Identity");
-
-      // Left: Idea (Hero Statement)
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 320;
-      left.resize(800, 480);
-      left.fills = [];
-
-      left.appendChild(makePill("BIMAX", C.graphite, C.auroraCyan));
-
-      const h1 = makeText("AI that can use your computer.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
-      h1.resize(760, 180);
-      left.appendChild(h1);
-
-      const sub = makeText("The zero-trust autonomous engineering control plane.", fontRegular, 24, C.silver);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (Clean Device Lockup)
-      const right = makeCard(760, 460, { padding: 48, itemSpacing: 24 });
-      right.x = 1040;
-      right.y = 310;
-
-      right.appendChild(makeText("WHAT IT ACTUALLY DOES", fontSemiBold, 13, C.slate, { letterSpacing: 1.5 }));
-      const claim = makeText("Bimax connects autonomous coding agents on your Mac to your phone with zero open ports, on-device SLM diff analysis, and biometric hardware gating.", fontMedium, 22, C.frost, { lineHeight: 34 });
-      claim.resize(664, 120);
-      right.appendChild(claim);
-
-      const div = figma.createFrame();
-      div.resize(664, 1);
-      div.fills = solid(C.graphite);
-      right.appendChild(div);
-
-      const footRow = figma.createFrame();
-      footRow.layoutMode = 'HORIZONTAL';
-      footRow.itemSpacing = 32;
-      footRow.fills = [];
-      footRow.appendChild(makePill("0 Open Ports", C.graphite, C.mint));
-      footRow.appendChild(makePill("Snapdragon NPU", C.graphite, C.auroraCyan));
-      footRow.appendChild(makePill("StrongBox HSM", C.graphite, C.signalBlue));
-      right.appendChild(footRow);
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 02: THE FRICTION (The Problem)
+    // SLIDE 01: THE CRISIS
     // "AI stops where the clicks begin."
     // ==========================================
     {
-      const s = makeSlide(2, "The Problem");
+      const s = makeSlide(1, "The Crisis");
 
       const left = figma.createFrame();
       left.layoutMode = 'VERTICAL';
       left.itemSpacing = 28;
       left.x = 120;
-      left.y = 320;
-      left.resize(800, 480);
+      left.y = 300;
+      left.resize(760, 520);
       left.fills = [];
 
-      left.appendChild(makePill("THE BOTTLENECK", C.graphite, C.amber));
-
+      left.appendChild(makePill("01 — THE CRISIS", C.graphite, C.amber));
       const h1 = makeText("AI stops where the clicks begin.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
-      h1.resize(760, 180);
+      h1.resize(740, 180);
       left.appendChild(h1);
 
-      const sub = makeText("Autonomous agents code at 100x. But leaving your desk means stalled prompts or catastrophic accidents.", fontRegular, 22, C.silver, { lineHeight: 32 });
-      sub.resize(720, 100);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (The Broken Loop)
-      const right = makeCard(760, 460, { padding: 48, itemSpacing: 24 });
-      right.x = 1040;
-      right.y = 310;
-
-      right.appendChild(makeText("THE CURRENT DEVELOPER TRAP", fontSemiBold, 13, C.slate, { letterSpacing: 1.5 }));
-
-      const steps = [
-        { label: "01", text: "Agent prompts: 'Run database migration? [y/n]'" },
-        { label: "02", text: "Developer steps away -> entire task stalls for hours" },
-        { label: "03", text: "Or agent runs unchecked -> hallucinated deletion or leaked secret" },
-        { label: "04", text: "Mobile SSH is broken: unreadable fonts, open port vulnerabilities" }
-      ];
-
-      for (const st of steps) {
-        const item = figma.createFrame();
-        item.layoutMode = 'HORIZONTAL';
-        item.itemSpacing = 20;
-        item.fills = [];
-        item.appendChild(makeText(st.label, fontBold, 18, C.slate));
-        const t = makeText(st.text, fontRegular, 18, C.silver);
-        t.resize(580, 24);
-        item.appendChild(t);
-        right.appendChild(item);
-      }
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 03: THE MENTAL MODEL
-    // "One request. The whole workflow."
-    // ==========================================
-    {
-      const s = makeSlide(3, "Mental Model");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 320;
-      left.resize(800, 480);
-      left.fills = [];
-
-      left.appendChild(makePill("THE MENTAL MODEL", C.graphite, C.auroraCyan));
-
-      const h1 = makeText("One request. The whole workflow.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
-      h1.resize(760, 180);
-      left.appendChild(h1);
-
-      const sub = makeText("You don't babysit an agent line-by-line. You set intent, inspect checkpoints, and authorize key transitions.", fontRegular, 22, C.silver, { lineHeight: 32 });
-      sub.resize(720, 100);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (Before vs After)
-      const right = makeCard(760, 460, { padding: 44, itemSpacing: 28 });
-      right.x = 1040;
-      right.y = 310;
-
-      // Before block
-      const bBlock = figma.createFrame();
-      bBlock.layoutMode = 'VERTICAL';
-      bBlock.itemSpacing = 8;
-      bBlock.fills = [];
-      bBlock.appendChild(makeText("BEFORE BIMAX", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
-      const bText = makeText("Tethered to laptop • Stalled CLI prompts • Unmonitored risk • Open port 22", fontRegular, 17, C.slate);
-      bBlock.appendChild(bText);
-      right.appendChild(bBlock);
-
-      const div = figma.createFrame();
-      div.resize(672, 1);
-      div.fills = solid(C.graphite);
-      right.appendChild(div);
-
-      // After block
-      const aBlock = figma.createFrame();
-      aBlock.layoutMode = 'VERTICAL';
-      aBlock.itemSpacing = 8;
-      aBlock.fills = [];
-      aBlock.appendChild(makeText("WITH BIMAX", fontSemiBold, 12, C.mint, { letterSpacing: 1.5 }));
-      const aText = makeText("One prompt from phone • Background execution • On-chip diff summary • Ultrasonic biometric approval", fontMedium, 18, C.frost, { lineHeight: 28 });
-      aText.resize(672, 60);
-      aBlock.appendChild(aText);
-      right.appendChild(aBlock);
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 04: THE HERO LIVE MOMENT
-    // "Watch this."
-    // ==========================================
-    {
-      const s = makeSlide(4, "Live Demo");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 24;
-      left.x = 120;
-      left.y = 360;
-      left.resize(760, 400);
-      left.fills = [];
-
-      left.appendChild(makePill("THE LIVE EXECUTION", C.graphite, C.signalBlue));
-
-      const h1 = makeText("Watch this.", fontBold, 96, C.frost, { letterSpacing: -2.5 });
-      left.appendChild(h1);
-
-      const sub = makeText("A single command executed across laptop and phone in real time.", fontRegular, 22, C.silver);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (The Hero Command Box)
-      const right = makeCard(820, 480, { padding: 44, itemSpacing: 24 });
-      right.x = 980;
-      right.y = 300;
-
-      right.appendChild(makeText("DISPATCHED PROMPT", fontSemiBold, 12, C.auroraCyan, { letterSpacing: 2.0 }));
-
-      const cmdBox = figma.createFrame();
-      cmdBox.resize(732, 130);
-      cmdBox.cornerRadius = 14;
-      cmdBox.fills = solid(C.deepInk);
-      cmdBox.strokes = solid(C.graphite);
-      cmdBox.strokeWeight = 1;
-      cmdBox.paddingLeft = 24;
-      cmdBox.paddingTop = 20;
-
-      const cmdText = makeText('"Refactor the auth middleware to scoped tokens, run tests, and ask before touching production secrets."', fontMedium, 19, C.frost, { lineHeight: 30 });
-      cmdText.resize(684, 80);
-      cmdBox.appendChild(cmdText);
-      right.appendChild(cmdBox);
-
-      // Status checkpoint
-      const statusBox = figma.createFrame();
-      statusBox.layoutMode = 'VERTICAL';
-      statusBox.itemSpacing = 12;
-      statusBox.fills = [];
-
-      statusBox.appendChild(makeText("LIVE CHECKPOINT", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
-      statusBox.appendChild(makeText("> 14 tests passing on Mac daemon", fontRegular, 16, C.mint));
-      statusBox.appendChild(makeText("> High-risk action detected: rotate_keys.sh", fontSemiBold, 16, C.amber));
-      statusBox.appendChild(makeText("> Awaiting StrongBox ultrasonic fingerprint on iQOO 15...", fontRegular, 16, C.auroraCyan));
-      right.appendChild(statusBox);
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 05: THE ARCHITECTURE
-    // "Phone + computer. One agent."
-    // ==========================================
-    {
-      const s = makeSlide(5, "Architecture");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 320;
-      left.resize(760, 480);
-      left.fills = [];
-
-      left.appendChild(makePill("TOPOLOGY", C.graphite, C.auroraCyan));
-
-      const h1 = makeText("Phone + computer. One agent.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
-      h1.resize(760, 180);
-      left.appendChild(h1);
-
-      const sub = makeText("The phone handles perception, triage, and human authorization. The workstation handles heavy compilation and execution.", fontRegular, 22, C.silver, { lineHeight: 32 });
-      sub.resize(720, 100);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (2-Node Connected System Diagram)
-      const right = makeCard(820, 460, { padding: 40, itemSpacing: 24 });
-      right.x = 980;
-      right.y = 310;
-
-      const nodesRow = figma.createFrame();
-      nodesRow.layoutMode = 'HORIZONTAL';
-      nodesRow.itemSpacing = 24;
-      nodesRow.fills = [];
-
-      // Node A: Phone
-      const nodeA = makeCard(350, 260, { padding: 28, itemSpacing: 14, bg: C.deepInk });
-      nodeA.appendChild(makePill("iQOO 15 (Phone)", C.auroraCyan, C.auroraCyan));
-      nodeA.appendChild(makeText("• Snapdragon 8 Elite NPU\n• On-chip SLM diff triage\n• StrongBox EC P-256 HSM\n• CameraX 1568px WebP", fontRegular, 15, C.silver, { lineHeight: 24 }));
-      nodesRow.appendChild(nodeA);
-
-      // Node B: Laptop
-      const nodeB = makeCard(350, 260, { padding: 28, itemSpacing: 14, bg: C.deepInk });
-      nodeB.appendChild(makePill("Mac Workstation", C.signalBlue, C.signalBlue));
-      nodeB.appendChild(makeText("• bimaxd Go daemon\n• Master POSIX PTY\n• Mach kernel vitals\n• Atomic SIGSTOP -PGID", fontRegular, 15, C.silver, { lineHeight: 24 }));
-      nodesRow.appendChild(nodeB);
-
-      right.appendChild(nodesRow);
-
-      const linkText = makeText("Connected via Outbound-Only Cloudflare Edge Tunnel  •  Noise_IK E2EE  •  0 Open Inbound Ports", fontMedium, 14, C.mint, { letterSpacing: 0.5 });
-      right.appendChild(linkText);
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 06: THE PROOF (It Works)
-    // "It works."
-    // ==========================================
-    {
-      const s = makeSlide(6, "Proof Metrics");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 340;
-      left.resize(600, 400);
-      left.fills = [];
-
-      left.appendChild(makePill("VERIFIED PROOF", C.graphite, C.mint));
-
-      const h1 = makeText("It works.", fontBold, 96, C.frost, { letterSpacing: -2.5 });
-      left.appendChild(h1);
-
-      const sub = makeText("Verified against official NIST, RFC, and Darwin kernel benchmarks.", fontRegular, 22, C.silver);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (3 Grand Metrics in Tabular Numerals)
-      const right = figma.createFrame();
-      right.layoutMode = 'HORIZONTAL';
-      right.itemSpacing = 24;
-      right.x = 800;
-      right.y = 300;
-      right.resize(1000, 480);
-      right.fills = [];
-
-      const metrics = [
-        { num: "0 ms", title: "Process Freeze", desc: "Atomic SIGSTOP across all Mac child processes via negative PGID." },
-        { num: "85%", title: "Token Savings", desc: "Spectra ISP downscales whiteboard snapshots to optimal 1568px WebP." },
-        { num: "0", title: "Open Ports", desc: "Outbound-only zero-trust tunnel. Zero public attack surface." }
-      ];
-
-      for (const m of metrics) {
-        const card = makeCard(310, 440, { padding: 36, itemSpacing: 18 });
-        card.appendChild(makeText(m.num, fontBold, 64, C.frost, { letterSpacing: -2.0, gradient: true }));
-        card.appendChild(makeText(m.title, fontBold, 22, C.frost));
-        const d = makeText(m.desc, fontRegular, 16, C.silver, { lineHeight: 26 });
-        d.resize(238, 120);
-        card.appendChild(d);
-        right.appendChild(card);
-      }
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 07: WHY NOW
-    // "Why now."
-    // ==========================================
-    {
-      const s = makeSlide(7, "Timing");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 320;
-      left.resize(760, 480);
-      left.fills = [];
-
-      left.appendChild(makePill("THE CONVERGENCE", C.graphite, C.auroraCyan));
-
-      const h1 = makeText("Why now.", fontBold, 88, C.frost, { letterSpacing: -2.5 });
-      left.appendChild(h1);
-
-      const sub = makeText("Three technological shifts made this possible for the first time in 2026.", fontRegular, 22, C.silver);
-      left.appendChild(sub);
-      s.appendChild(left);
-
-      // Right: Evidence (3 Forces Maximum)
-      const right = makeCard(820, 460, { padding: 44, itemSpacing: 24 });
-      right.x = 980;
-      right.y = 310;
-
-      const forces = [
-        { force: "01 · Frontier Agent Autonomy", desc: "Models like Claude Code can run complex, multi-hour engineering tasks alone." },
-        { force: "02 · 3nm Mobile AI Silicon", desc: "Snapdragon 8 Elite's Oryon CPU and Hexagon NPU can run 4-bit SLMs locally on-chip." },
-        { force: "03 · Hardware Enclave Security", desc: "Android StrongBox enables air-gapped cryptographic signing for critical operations." }
-      ];
-
-      for (const f of forces) {
-        const item = figma.createFrame();
-        item.layoutMode = 'VERTICAL';
-        item.itemSpacing = 8;
-        item.fills = [];
-        item.appendChild(makeText(f.force, fontBold, 20, C.frost));
-        const d = makeText(f.desc, fontRegular, 16, C.silver, { lineHeight: 24 });
-        d.resize(732, 48);
-        item.appendChild(d);
-        right.appendChild(item);
-      }
-
-      s.appendChild(right);
-      allSlides.push(s);
-    }
-
-    // ==========================================
-    // SLIDE 08: OUR WEDGE
-    // "Our wedge."
-    // ==========================================
-    {
-      const s = makeSlide(8, "The Wedge");
-
-      const left = figma.createFrame();
-      left.layoutMode = 'VERTICAL';
-      left.itemSpacing = 28;
-      left.x = 120;
-      left.y = 320;
-      left.resize(760, 480);
-      left.fills = [];
-
-      left.appendChild(makePill("MARKET ADOPTION", C.graphite, C.signalBlue));
-
-      const h1 = makeText("Our wedge.", fontBold, 88, C.frost, { letterSpacing: -2.5 });
-      left.appendChild(h1);
-
-      const sub = makeText("Engineers running long-horizon autonomous tasks who cannot afford stalled momentum or leaked secrets.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      const sub = makeText("We gave AI the shell, the repository, and the cloud. Yet developers are more tethered to their desks than ever before.", fontRegular, 22, C.silver, { lineHeight: 32 });
       sub.resize(700, 100);
       left.appendChild(sub);
       s.appendChild(left);
 
-      // Right: Evidence (Urgent Workflows)
-      const right = makeCard(820, 460, { padding: 44, itemSpacing: 24 });
+      // Right: Evidence Card
+      const right = makeCard(820, 500, { padding: 44, itemSpacing: 22 });
       right.x = 980;
-      right.y = 310;
+      right.y = 290;
 
-      right.appendChild(makeText("HIGH-CONSEQUENCE WORKFLOWS WE SECURE", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+      right.appendChild(makeText("THE DEVELOPER BABYSITTING TRAP", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
 
-      const wedges = [
-        { title: "Background Refactoring", detail: "Overnight architecture migrations running autonomously while you sleep." },
-        { title: "Cloud Deployment Approvals", detail: "Authorizing infrastructure deployments with StrongBox ultrasonic biometrics." },
-        { title: "Incident Remediation", detail: "Fixing broken production builds on the go from your phone without opening a laptop." }
+      // Mock Terminal Checkpoint
+      const termBox = figma.createFrame();
+      termBox.resize(732, 140);
+      termBox.cornerRadius = 12;
+      termBox.fills = solid(C.deepInk);
+      termBox.strokes = solid(C.graphite);
+      termBox.strokeWeight = 1;
+      termBox.paddingLeft = 24;
+      termBox.paddingTop = 18;
+
+      const codeLines = figma.createFrame();
+      codeLines.layoutMode = 'VERTICAL';
+      codeLines.itemSpacing = 8;
+      codeLines.fills = [];
+      codeLines.appendChild(makeText("> running test suite (142 tests)... PASS", fontRegular, 14, C.mint));
+      codeLines.appendChild(makeText("> WARNING: Schema mutation detected", fontSemiBold, 14, C.amber));
+      codeLines.appendChild(makeText("> Execute 'DROP TABLE staging_orders;'? [y/n]: _", fontBold, 15, C.frost));
+      termBox.appendChild(codeLines);
+      right.appendChild(termBox);
+
+      right.appendChild(makeText("STATUS: STALLED FOR 3 HOURS (DEVELOPER STEPPED AWAY)", fontBold, 13, C.amber, { letterSpacing: 1.0 }));
+
+      const div = figma.createFrame();
+      div.resize(732, 1);
+      div.fills = solid(C.graphite);
+      right.appendChild(div);
+
+      const failureRow = figma.createFrame();
+      failureRow.layoutMode = 'VERTICAL';
+      failureRow.itemSpacing = 8;
+      failureRow.fills = [];
+      failureRow.appendChild(makeText("• Checkpoint Paralysis: 0 progress while away from desk", fontRegular, 15, C.silver));
+      failureRow.appendChild(makeText("• Rogue Execution: Hallucinated commands wipe data with 0 killswitch", fontRegular, 15, C.silver));
+      failureRow.appendChild(makeText("• The Mobile SSH Anti-Pattern: Insecure open ports & unreadable 8pt fonts", fontRegular, 15, C.silver));
+      right.appendChild(failureRow);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 02: THE IDENTITY & MENTAL MODEL
+    // "The autonomous engineering control plane."
+    // ==========================================
+    {
+      const s = makeSlide(2, "The Identity");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("02 — THE IDENTITY", C.graphite, C.auroraCyan));
+      const h1 = makeText("The autonomous engineering control plane.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("Not an SSH client. Not a remote desktop. A hardware-isolated flight deck that separates heavy compute from mobile authority.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card
+      const right = makeCard(820, 500, { padding: 40, itemSpacing: 22 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE DUAL-HEMISPHERE SYSTEM", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const nodesRow = figma.createFrame();
+      nodesRow.layoutMode = 'HORIZONTAL';
+      nodesRow.itemSpacing = 20;
+      nodesRow.fills = [];
+
+      // Node Left: Mobile
+      const nodeA = makeCard(360, 260, { padding: 24, itemSpacing: 12, bg: C.deepInk });
+      nodeA.appendChild(makePill("iQOO 15 (BimaxGo)", C.auroraCyan, C.auroraCyan));
+      nodeA.appendChild(makeText("• Snapdragon 8 Elite NPU\n• On-chip SLM diff triage\n• StrongBox EC P-256 HSM\n• Hardware Panic volume abort", fontRegular, 14, C.silver, { lineHeight: 22 }));
+      nodesRow.appendChild(nodeA);
+
+      // Node Right: Mac
+      const nodeB = makeCard(360, 260, { padding: 24, itemSpacing: 12, bg: C.deepInk });
+      nodeB.appendChild(makePill("Mac Workstation (bimaxd)", C.signalBlue, C.signalBlue));
+      nodeB.appendChild(makeText("• Master POSIX PTY supervisor\n• Zero-sudo Mach kernel vitals\n• Atomic SIGSTOP -PGID\n• Ephemeral credential broker", fontRegular, 14, C.silver, { lineHeight: 22 }));
+      nodesRow.appendChild(nodeB);
+
+      right.appendChild(nodesRow);
+
+      const connText = makeText("Connected through Cloudflare Edge  •  Noise_IK 1-RTT E2EE  •  0 Open Inbound Ports", fontMedium, 14, C.mint, { letterSpacing: 0.5 });
+      right.appendChild(connText);
+
+      const bottomRule = makeText("CORE PREMISE: Heavy code compiles on the Mac. Perception, triage, and authority stay in your hand.", fontRegular, 14, C.slate);
+      right.appendChild(bottomRule);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 03: THE ANTIDOTE MATRIX
+    // "Engineering the antidote."
+    // ==========================================
+    {
+      const s = makeSlide(3, "Problem to Solution");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("03 — THE ANTIDOTE", C.graphite, C.mint));
+      const h1 = makeText("Engineering the antidote.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("We didn't build generic mobile features. We engineered concrete cryptographic and kernel countermeasures for every failure mode.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 16 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE BIMAX COUNTERMEASURE MATRIX", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const tableData = [
+        { pain: "Stalled Checkpoints", fix: "PTY Sliding-Window + FCM v1 wake", metric: "<50ms" },
+        { pain: "Rogue Destruction", fix: "StrongBox HSM ultrasonic biometrics", metric: "EC P-256" },
+        { pain: "Runaway Agent Loops", fix: "Negative PGID SIGSTOP volume kill", metric: "0 ms" },
+        { pain: "Insecure Port 22", fix: "Outbound-only Cloudflare edge tunnel", metric: "0 Ports" },
+        { pain: "Cognitive Diff Fatigue", fix: "Snapdragon 8 Elite AST hunk scoring", metric: "85% save" }
       ];
 
-      for (const w of wedges) {
+      for (const row of tableData) {
+        const rBox = figma.createFrame();
+        rBox.resize(748, 54);
+        rBox.cornerRadius = 8;
+        rBox.layoutMode = 'HORIZONTAL';
+        rBox.primaryAxisAlignItems = 'SPACE_BETWEEN';
+        rBox.counterAxisAlignItems = 'CENTER';
+        rBox.paddingLeft = 16;
+        rBox.paddingRight = 16;
+        rBox.fills = solid(C.deepInk);
+
+        const leftSide = figma.createFrame();
+        leftSide.layoutMode = 'HORIZONTAL';
+        leftSide.itemSpacing = 16;
+        leftSide.fills = [];
+        leftSide.appendChild(makeText(row.pain, fontSemiBold, 14, C.frost));
+        leftSide.appendChild(makeText("──►  " + row.fix, fontRegular, 13, C.silver));
+        rBox.appendChild(leftSide);
+
+        rBox.appendChild(makeText(row.metric, fontBold, 13, C.mint));
+        right.appendChild(rBox);
+      }
+
+      const foot = makeText("Software is never allowed to approve software. Physical silicon holds the master key.", fontRegular, 13, C.slate);
+      right.appendChild(foot);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 04: THE 5 BREAKTHROUGHS
+    // "Not just an app. A hardware superpower."
+    // ==========================================
+    {
+      const s = makeSlide(4, "The 5 Breakthroughs");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("04 — THE BREAKTHROUGHS", C.graphite, C.signalBlue));
+      const h1 = makeText("Not just an app. A hardware superpower.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("Five breakthrough capabilities engineered at the intersection of Snapdragon silicon, macOS Darwin internals, and hardware cryptography.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 14 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE 5 HARDWARE CAPABILITIES", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const feats = [
+        { num: "01", title: "0ms Hardware Killswitch", desc: "Double-tap volume button: atomic SIGSTOP -PGID freezes all child processes." },
+        { num: "02", title: "StrongBox HSM Biometric Gate", desc: "Ultrasonic fingerprint signs high-risk actions with unexportable NIST EC P-256." },
+        { num: "03", title: "Snapdragon 8 Elite On-Chip SLM", desc: "Oryon CPU ARM I8MM SIMD collapses 5,000-line diffs to 3 bullets in <2s offline." },
+        { num: "04", title: "Zero-Permission SMS 2FA Relay", desc: "Play Services SMS Consent catches OTPs; biometrically types into Mac Playwright." },
+        { num: "05", title: "vivo Office Kit 3-Column Cockpit", desc: "Dock to monitor: Jetpack Compose morphs into a 60fps engineering workstation." }
+      ];
+
+      for (const f of feats) {
+        const item = figma.createFrame();
+        item.layoutMode = 'HORIZONTAL';
+        item.itemSpacing = 16;
+        item.fills = [];
+        item.appendChild(makeText(f.num, fontBold, 15, C.auroraCyan));
+
+        const textCol = figma.createFrame();
+        textCol.layoutMode = 'VERTICAL';
+        textCol.itemSpacing = 2;
+        textCol.fills = [];
+        textCol.appendChild(makeText(f.title, fontSemiBold, 15, C.frost));
+        textCol.appendChild(makeText(f.desc, fontRegular, 13, C.silver));
+        item.appendChild(textCol);
+
+        right.appendChild(item);
+      }
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 05: STRATEGIC PRIORITIES & NON-NEGOTIABLES
+    // "The discipline of restraint."
+    // ==========================================
+    {
+      const s = makeSlide(5, "Non-Negotiables");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("05 — STRATEGIC PRIORITIES", C.graphite, C.auroraCyan));
+      const h1 = makeText("The discipline of restraint.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("Great engineering is defined by what you refuse to compromise. We established four non-negotiable rules for autonomous control.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card
+      const right = makeCard(820, 500, { padding: 40, itemSpacing: 22 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE BIMAX NON-NEGOTIABLE LEDGER", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const tenets = [
+        { rule: "Zero Inbound Holes", build: "Outbound-only Cloudflare tunnel", refuse: "No open port 22, no UPnP, no public IP exposure." },
+        { rule: "Hardware Authority", build: "StrongBox HSM biometric enclave", refuse: "Software never approves software. No auto-approve checkboxes." },
+        { rule: "On-Chip Privacy", build: "Snapdragon 8 Elite local SLM", refuse: "Zero bouncing of raw diffs or code to 3rd-party cloud LLMs." },
+        { rule: "Pure Flight Deck", build: "Focused telemetry & triage UI", refuse: "No cramming bloated multi-tab IDEs onto a 6.7-inch mobile screen." }
+      ];
+
+      for (const t of tenets) {
+        const box = figma.createFrame();
+        box.layoutMode = 'VERTICAL';
+        box.itemSpacing = 4;
+        box.fills = [];
+        box.appendChild(makeText(t.rule + "  ──►  " + t.build, fontSemiBold, 15, C.frost));
+        box.appendChild(makeText("Refusal: " + t.refuse, fontRegular, 13, C.slate));
+        right.appendChild(box);
+      }
+
+      const quote = makeText("Built for enterprise paranoia. Engineered for developer velocity.", fontMedium, 14, C.mint);
+      right.appendChild(quote);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 06: THE COMPETITIVE LANDSCAPE
+    // "A category of one."
+    // ==========================================
+    {
+      const s = makeSlide(6, "Competitive Moat");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("06 — THE LANDSCAPE", C.graphite, C.signalBlue));
+      const h1 = makeText("A category of one.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("Traditional mobile tools treat AI like an SSH log. Cloud platforms abandon your local workstation. Bimax unifies security, mobility, and intelligence.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card (Comparison Matrix)
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 16 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("COMPETITIVE CAPABILITY MATRIX", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      // Table Header
+      const th = figma.createFrame();
+      th.resize(748, 28);
+      th.layoutMode = 'HORIZONTAL';
+      th.itemSpacing = 20;
+      th.fills = [];
+      th.appendChild(makeText("CAPABILITY", fontSemiBold, 12, C.slate));
+      right.appendChild(th);
+
+      const matrix = [
+        { cap: "0 Open Ports (Inbound Security)", termius: "❌ Port 22", tailscale: "⚠️ Mesh IP", bimax: "✅ Outbound Tunnel" },
+        { cap: "Agent Checkpoint Intercept", termius: "❌ None", tailscale: "❌ None", bimax: "✅ PTY Regex + Push" },
+        { cap: "On-Chip Diff Privacy", termius: "❌ None", tailscale: "❌ None", bimax: "✅ Snapdragon SLM" },
+        { cap: "Hardware Biometric Gate", termius: "❌ None", tailscale: "❌ None", bimax: "✅ StrongBox HSM" },
+        { cap: "0ms Emergency Killswitch", termius: "❌ Manual", tailscale: "❌ Manual", bimax: "✅ Hardware SIGSTOP" },
+        { cap: "Local Workstation Retained", termius: "✅ Yes", tailscale: "✅ Yes", bimax: "✅ Yes (Zero Cloud Lock)" }
+      ];
+
+      for (const m of matrix) {
         const row = figma.createFrame();
-        row.layoutMode = 'VERTICAL';
-        row.itemSpacing = 6;
-        row.fills = [];
-        row.appendChild(makeText(w.title, fontBold, 20, C.frost));
-        row.appendChild(makeText(w.detail, fontRegular, 16, C.silver));
+        row.resize(748, 44);
+        row.cornerRadius = 6;
+        row.layoutMode = 'HORIZONTAL';
+        row.primaryAxisAlignItems = 'SPACE_BETWEEN';
+        row.counterAxisAlignItems = 'CENTER';
+        row.paddingLeft = 14;
+        row.paddingRight = 14;
+        row.fills = solid(C.deepInk);
+
+        row.appendChild(makeText(m.cap, fontMedium, 13, C.frost));
+
+        const rightVals = figma.createFrame();
+        rightVals.layoutMode = 'HORIZONTAL';
+        rightVals.itemSpacing = 24;
+        rightVals.fills = [];
+        rightVals.appendChild(makeText("SSH: " + m.termius, fontRegular, 12, C.slate));
+        rightVals.appendChild(makeText("BIMAX: " + m.bimax, fontBold, 12, C.mint));
+        row.appendChild(rightVals);
+
         right.appendChild(row);
       }
 
@@ -571,50 +525,210 @@
     }
 
     // ==========================================
-    // SLIDE 09: TRUST & CONTROL
-    // "Designed for control."
+    // SLIDE 07: THE QUANTITATIVE MOAT
+    // "Measured in orders of magnitude."
     // ==========================================
     {
-      const s = makeSlide(9, "Trust & Control");
+      const s = makeSlide(7, "Quantitative Moat");
 
       const left = figma.createFrame();
       left.layoutMode = 'VERTICAL';
       left.itemSpacing = 28;
       left.x = 120;
-      left.y = 320;
-      left.resize(760, 480);
+      left.y = 300;
+      left.resize(760, 520);
       left.fills = [];
 
-      left.appendChild(makePill("RESOLVING PRIVACY ANXIETY", C.graphite, C.mint));
-
-      const h1 = makeText("Designed for control.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
-      h1.resize(760, 180);
+      left.appendChild(makePill("07 — QUANTITATIVE MOAT", C.graphite, C.mint));
+      const h1 = makeText("Measured in orders of magnitude.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
       left.appendChild(h1);
 
-      const sub = makeText("Software is no longer allowed to approve software. You are always the final authority.", fontRegular, 22, C.silver, { lineHeight: 32 });
-      sub.resize(720, 100);
+      const sub = makeText("Bimax is not 10% faster. It is mathematically and architecturally superior across every critical engineering vector.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
       left.appendChild(sub);
       s.appendChild(left);
 
-      // Right: Evidence (The Concrete Trust Ledger)
-      const right = makeCard(820, 460, { padding: 40, itemSpacing: 22 });
+      // Right: Evidence Card (4 Big Metrics)
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 20 });
       right.x = 980;
-      right.y = 310;
+      right.y = 290;
 
-      const ledger = [
-        { q: "Where does code perception run?", a: "100% on-device via Snapdragon 8 Elite NPU; never leaves your hands." },
-        { q: "How are destructive actions gated?", a: "Android StrongBox HSM requires ultrasonic fingerprint; EC P-256 signed." },
-        { q: "Can an agent leak secrets?", a: "Client-side Shannon Entropy (H>=4.5) redacts keys before network transmission." },
-        { q: "What if an agent goes rogue?", a: "Double-tap physical volume button: 0ms negative PGID SIGSTOP freezes all processes." }
+      right.appendChild(makeText("VERIFIED HARDWARE BENCHMARKS", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const gridRow1 = figma.createFrame();
+      gridRow1.layoutMode = 'HORIZONTAL';
+      gridRow1.itemSpacing = 20;
+      gridRow1.fills = [];
+
+      const m1 = makeCard(364, 180, { padding: 24, itemSpacing: 8, bg: C.deepInk });
+      m1.appendChild(makeText("85%", fontBold, 54, C.frost, { gradient: true }));
+      m1.appendChild(makeText("Less Vision Tokens", fontBold, 16, C.frost));
+      m1.appendChild(makeText("16,258t -> 2,459t via Spectra WebP", fontRegular, 13, C.silver));
+      gridRow1.appendChild(m1);
+
+      const m2 = makeCard(364, 180, { padding: 24, itemSpacing: 8, bg: C.deepInk });
+      m2.appendChild(makeText("0 ms", fontBold, 54, C.frost, { gradient: true }));
+      m2.appendChild(makeText("Child Process Freeze", fontBold, 16, C.frost));
+      m2.appendChild(makeText("Atomic SIGSTOP across all CPU cores", fontRegular, 13, C.silver));
+      gridRow1.appendChild(m2);
+      right.appendChild(gridRow1);
+
+      const gridRow2 = figma.createFrame();
+      gridRow2.layoutMode = 'HORIZONTAL';
+      gridRow2.itemSpacing = 20;
+      gridRow2.fills = [];
+
+      const m3 = makeCard(364, 180, { padding: 24, itemSpacing: 8, bg: C.deepInk });
+      m3.appendChild(makeText("0", fontBold, 54, C.frost, { gradient: true }));
+      m3.appendChild(makeText("Inbound Open Ports", fontBold, 16, C.frost));
+      m3.appendChild(makeText("Outbound-only. Zero public attack surface", fontRegular, 13, C.silver));
+      gridRow2.appendChild(m3);
+
+      const m4 = makeCard(364, 180, { padding: 24, itemSpacing: 8, bg: C.deepInk });
+      m4.appendChild(makeText("10×", fontBold, 54, C.frost, { gradient: true }));
+      m4.appendChild(makeText("Mobile Battery Longevity", fontBold, 16, C.frost));
+      m4.appendChild(makeText("DO Hibernation drops drain to <0.3%/h", fontRegular, 13, C.silver));
+      gridRow2.appendChild(m4);
+      right.appendChild(gridRow2);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 08: SILICON & TECHNOLOGY STACK
+    // "Built on bare metal."
+    // ==========================================
+    {
+      const s = makeSlide(8, "Tech Stack");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("08 — SILICON & STACK", C.graphite, C.auroraCyan));
+      const h1 = makeText("Built on bare metal.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("No electron wrappers. No simulated terminals. Bimax is engineered directly on silicon, kernel syscalls, and edge primitives.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card (3 Tiers)
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 16 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE THREE BARE-METAL TIERS", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const tiers = [
+        {
+          name: "1. ANDROID SILICON TIER (iQOO 15)",
+          color: C.auroraCyan,
+          details: "Snapdragon 8 Elite Oryon CPU (ARM I8MM SIMD) • StrongBox HSM (NIST EC P-256) • Jetpack Compose 60fps Zero-GC Ring Buffer"
+        },
+        {
+          name: "2. CLOUDFLARE EDGE TIER (Zero Trust Relay)",
+          color: C.mint,
+          details: "Worker DO Hibernation (Zero Idle Compute Cost) • Noise_IK 1-RTT E2EE (ChaCha20-Poly1305) • RFC 6479 1024-Bit Anti-Replay"
+        },
+        {
+          name: "3. MACOS WORKSTATION TIER (bimaxd Daemon)",
+          color: C.signalBlue,
+          details: "Master POSIX PTY Supervisor (Setpgid: true) • Darwin Mach Kernel host_statistics64 (Zero Sudo) • Atomic SIGSTOP -PGID"
+        }
       ];
 
-      for (const item of ledger) {
+      for (const tr of tiers) {
+        const tCard = makeCard(748, 105, { padding: 18, itemSpacing: 6, bg: C.deepInk });
+        tCard.appendChild(makeText(tr.name, fontSemiBold, 13, tr.color, { letterSpacing: 1.0 }));
+        const tDesc = makeText(tr.details, fontRegular, 13, C.silver, { lineHeight: 20 });
+        tDesc.resize(712, 42);
+        tCard.appendChild(tDesc);
+        right.appendChild(tCard);
+      }
+
+      const compliance = makeText("COMPLIANCE: FIPS 186-4  •  POSIX.1-2017  •  RFC 6455  •  Noise Protocol rev 34", fontRegular, 12, C.slate);
+      right.appendChild(compliance);
+
+      s.appendChild(right);
+      allSlides.push(s);
+    }
+
+    // ==========================================
+    // SLIDE 09: CORE METHODOLOGIES & SCIENCE
+    // "Grounded in foundational science."
+    // ==========================================
+    {
+      const s = makeSlide(9, "Methodologies");
+
+      const left = figma.createFrame();
+      left.layoutMode = 'VERTICAL';
+      left.itemSpacing = 28;
+      left.x = 120;
+      left.y = 300;
+      left.resize(760, 520);
+      left.fills = [];
+
+      left.appendChild(makePill("09 — METHODOLOGIES", C.graphite, C.mint));
+      const h1 = makeText("Grounded in foundational science.", fontBold, 76, C.frost, { letterSpacing: -2.0, lineHeight: 86 });
+      h1.resize(740, 180);
+      left.appendChild(h1);
+
+      const sub = makeText("Heuristics and guesswork fail under enterprise load. Bimax is engineered on four proven mathematical disciplines.", fontRegular, 22, C.silver, { lineHeight: 32 });
+      sub.resize(700, 100);
+      left.appendChild(sub);
+      s.appendChild(left);
+
+      // Right: Evidence Card (4 Formulations)
+      const right = makeCard(820, 500, { padding: 36, itemSpacing: 14 });
+      right.x = 980;
+      right.y = 290;
+
+      right.appendChild(makeText("THE FOUR SCIENTIFIC FOUNDATIONS", fontSemiBold, 12, C.slate, { letterSpacing: 1.5 }));
+
+      const methods = [
+        {
+          num: "1",
+          title: "ACM TOSEM Hunk Scoring Formula",
+          formula: "Score(h_i) = 3(N_add + N_del) + 5*I_core + 4*I_test + ...",
+          desc: "Collapses 5,000-line diffs to <=1000 tokens (96% noise reduction)."
+        },
+        {
+          num: "2",
+          title: "Shannon Information Entropy (H >= 4.5)",
+          formula: "H(S) = -sum( P(c_i) * log2(P(c_i)) ) >= 4.5",
+          desc: "Intercepts unindexed API keys & secrets client-side before transmission."
+        },
+        {
+          num: "3",
+          title: "Noise_IK 1-RTT Mutual Handshake",
+          formula: "e, es, s, ss over Curve25519 + ChaCha20-Poly1305 + BLAKE2s",
+          desc: "RFC 6479 1024-bit sliding window prevents replay attacks."
+        },
+        {
+          num: "4",
+          title: "Zero-Allocation VT100 Ring Buffer",
+          formula: "Index = (head + offset) mod capacity",
+          desc: "10,000-line pre-allocated circular buffer renders at 120fps with 0 GC pauses."
+        }
+      ];
+
+      for (const m of methods) {
         const box = figma.createFrame();
         box.layoutMode = 'VERTICAL';
-        box.itemSpacing = 4;
+        box.itemSpacing = 2;
         box.fills = [];
-        box.appendChild(makeText(item.q, fontSemiBold, 15, C.auroraCyan));
-        box.appendChild(makeText(item.a, fontRegular, 15, C.silver));
+        box.appendChild(makeText(m.num + ". " + m.title, fontSemiBold, 14, C.auroraCyan));
+        box.appendChild(makeText(m.formula, fontBold, 13, C.frost));
+        box.appendChild(makeText(m.desc, fontRegular, 12, C.silver));
         right.appendChild(box);
       }
 
@@ -639,7 +753,7 @@
       center.y = 140;
       center.fills = [];
 
-      center.appendChild(makePill("BIMAX · 2026", C.graphite, C.auroraCyan));
+      center.appendChild(makePill("10 — THE HORIZON", C.graphite, C.auroraCyan));
 
       const h1 = makeText("From assistant to operator.", fontBold, 88, C.frost, { letterSpacing: -2.5, gradient: true });
       center.appendChild(h1);
@@ -652,9 +766,9 @@
       spacer.fills = [];
       center.appendChild(spacer);
 
-      const closeCard = makeCard(720, 180, { padding: 32, itemSpacing: 14, bg: C.carbon });
-      closeCard.appendChild(makeText("BIMAX", fontBold, 24, C.frost));
-      closeCard.appendChild(makeText("One request. The whole workflow.", fontRegular, 18, C.silver));
+      const closeCard = makeCard(760, 200, { padding: 36, itemSpacing: 14, bg: C.carbon });
+      closeCard.appendChild(makeText("BIMAX", fontBold, 26, C.frost));
+      closeCard.appendChild(makeText("One request. The whole workflow.", fontRegular, 19, C.silver));
       closeCard.appendChild(makeText("bimax.ai  •  github.com/Sid7on1/BimaxApk", fontSemiBold, 15, C.auroraCyan));
       center.appendChild(closeCard);
 
@@ -665,7 +779,7 @@
     // Finalize: Select all slides & zoom into view
     figma.currentPage.selection = allSlides;
     figma.viewport.scrollAndZoomIntoView(allSlides);
-    figma.closePlugin(" Apple-Class 10-Slide Investor & Stage Deck Generated!");
+    figma.closePlugin(" Apple-Class 10-Slide Master Deck Generated!");
   } catch (err) {
     console.error("Figma Plugin Error:", err);
     figma.notify("⚠️ Error: " + (err.message || String(err)), { error: true });
