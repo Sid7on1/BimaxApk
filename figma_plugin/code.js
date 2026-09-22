@@ -2,6 +2,7 @@
 // 12 Monumental Keynote Slides (1920x1080) with Deep Research Content & Apple Aesthetics
 
 (async () => {
+  try {
   // Apple Palette
   const C = {
     black: { r: 0.0, g: 0.0, b: 0.0 },              // Void Black #000000
@@ -18,16 +19,31 @@
 
   const solid = (rgb, a = 1) => [{ type: 'SOLID', color: rgb, opacity: a }];
 
-  // Pre-load Figma fonts
-  const fontReg = { family: "Inter", style: "Regular" };
-  const fontMed = { family: "Inter", style: "Medium" };
-  const fontSemi = { family: "Inter", style: "Semi Bold" };
+  // 2. Pre-load standard Figma fonts (Inter)
+  const fontRegular = { family: "Inter", style: "Regular" };
+  const fontMedium = { family: "Inter", style: "Medium" };
+  const fontSemiBold = { family: "Inter", style: "Semi Bold" };
   const fontBold = { family: "Inter", style: "Bold" };
 
-  await figma.loadFontAsync(fontReg);
-  await figma.loadFontAsync(fontMed);
-  await figma.loadFontAsync(fontSemi);
-  await figma.loadFontAsync(fontBold);
+  // Aliases for seamless compatibility
+  const fontReg = fontRegular;
+  const fontMed = fontMedium;
+  const fontSemi = fontSemiBold;
+
+  try {
+    await Promise.all([
+      figma.loadFontAsync(fontRegular),
+      figma.loadFontAsync(fontMedium),
+      figma.loadFontAsync(fontSemiBold),
+      figma.loadFontAsync(fontBold),
+    ]);
+  } catch (fontErr) {
+    // Fallback if Semi Bold or Medium aren't available locally
+    await Promise.all([
+      figma.loadFontAsync(fontRegular),
+      figma.loadFontAsync(fontBold),
+    ]);
+  }
 
   function makeText(text, font, size, fill, opts = {}) {
     const t = figma.createText();
@@ -512,4 +528,9 @@
   figma.currentPage.selection = allSlides;
   figma.viewport.scrollAndZoomIntoView(allSlides);
   figma.closePlugin(" Apple Keynote Edition Generated Successfully!");
+  } catch (err) {
+    console.error("Figma Plugin Error:", err);
+    figma.notify("⚠️ Error: " + (err.message || String(err)), { error: true });
+    figma.closePlugin();
+  }
 })();
